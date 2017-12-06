@@ -1,0 +1,6 @@
+framework module Dodo {
+  umbrella header "Dodo-umbrella.h"
+
+  export *
+  module * { export * }
+}

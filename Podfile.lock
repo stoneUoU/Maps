@@ -1,0 +1,126 @@
+PODS:
+  - ActionButton (0.1.5)
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - Alamofire (4.5.0)
+  - Dodo (8.0.0)
+  - FSCalendar (2.7.9)
+  - FTIndicator (1.2.0):
+    - FTIndicator/FTNotificationIndicator (= 1.2.0)
+    - FTIndicator/FTProgressIndicator (= 1.2.0)
+    - FTIndicator/FTToastIndicator (= 1.2.0)
+  - FTIndicator/FTNotificationIndicator (1.2.0)
+  - FTIndicator/FTProgressIndicator (1.2.0)
+  - FTIndicator/FTToastIndicator (1.2.0)
+  - IQKeyboardManagerSwift (5.0.4)
+  - JCore (1.1.3)
+  - JPush (3.0.2):
+    - JCore (~> 1.1.1)
+  - KeychainSwift (10.0.0)
+  - Kingfisher (3.10.2)
+  - LLCycleScrollView (1.3.0):
+    - Kingfisher
+  - MBProgressHUD (1.0.0)
+  - MIBlurPopup (0.1.1)
+  - MJRefresh (3.1.12)
+  - Moya (10.0.0):
+    - Moya/Core (= 10.0.0)
+  - Moya/Core (10.0.0):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - NMPopUpViewSwift (4.0.2)
+  - ObjectMapper (3.0.0)
+  - PTPopupWebView (0.4.0)
+  - ReachabilitySwift (3)
+  - Result (3.2.4)
+  - RxCocoa (4.0.0):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.0.0)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
+  - SnapKit (3.2.0)
+  - SVProgressHUD (2.1.2)
+  - SwiftIconFont (2.6.0)
+  - SwiftMessages (3.3.4)
+  - SwiftyJSON (3.1.4)
+  - Whisper (5.0.0)
+
+DEPENDENCIES:
+  - ActionButton
+  - AFNetworking (~> 3.1.0)
+  - Alamofire
+  - Dodo
+  - FSCalendar
+  - FTIndicator
+  - IQKeyboardManagerSwift
+  - JPush (= 3.0.2)
+  - KeychainSwift
+  - LLCycleScrollView
+  - MBProgressHUD (~> 1.0.0)
+  - MIBlurPopup
+  - MJRefresh
+  - Moya
+  - NMPopUpViewSwift
+  - ObjectMapper
+  - PTPopupWebView
+  - ReachabilitySwift
+  - Result
+  - RxCocoa
+  - RxSwift
+  - SDWebImage (~> 4.0)
+  - SnapKit
+  - SVProgressHUD
+  - SwiftIconFont
+  - SwiftMessages
+  - SwiftyJSON
+  - Whisper
+
+SPEC CHECKSUMS:
+  ActionButton: a71147de5a83b6d8d8e18464b216904ba7821677
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Dodo: 93541c1ab02b400b2a473cbb8132133ff8174af1
+  FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
+  FTIndicator: e1c035b99b8df1b1a40702b37cdc12fac5dd057c
+  IQKeyboardManagerSwift: a0592bb636b10a9a1cf75d2b2c61144226226c84
+  JCore: dff3c50e9a7522a508cd9096ca79165968e1aed3
+  JPush: 01a693fafe51b93eafc2e368bbc7a7cc07e12ce4
+  KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
+  Kingfisher: 7297492bf8cec9b2e2dee3519f2219948580d98e
+  LLCycleScrollView: 060b1b98b4ed284cc6ff5c5cca18a0d8542e94ae
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MIBlurPopup: debbc8f4f631809797140d37b5476745a61e90be
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  Moya: adb58b0f4e58430db43cc6e2f6ebab1836501186
+  NMPopUpViewSwift: 9a2ea26dd7875804c478eb97bbc41cdab5d25da8
+  ObjectMapper: 92230db59bf8f341a5c3a3cf0b9fbdde3cf0d87f
+  PTPopupWebView: 9db92ddc0629ed735dee23d4388d67b18158d55c
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
+  RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  SwiftIconFont: bbe1f32e1e16bac87dad8566afc80132cb8d072c
+  SwiftMessages: 1172842c4d4af818704f90c50ec8dc597e55c9af
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Whisper: 051f25e704bf8992641ffd28b20d5682ddc5f5d3
+
+PODFILE CHECKSUM: d4d79ada374079cb3fe15da2bdb8a79462209660
+
+COCOAPODS: 1.3.1
