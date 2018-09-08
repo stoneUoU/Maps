@@ -10,7 +10,7 @@ import UIKit
 
 class CustomTabBar: UITabBar {
     
-    let tabBarView = TabBarItemsV()
+    var tabBarView = TabBarItemsV()
     
     override init(frame: CGRect) {
         

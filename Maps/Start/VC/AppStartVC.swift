@@ -13,7 +13,7 @@ class AppStartVC: UIViewController {
     fileprivate var imageNames = ["guide_40_1", "guide_40_2", "guide_40_3", "guide_40_4"]
     fileprivate let cellIdentifier = "AppStartCell"
     fileprivate var isHiddenNextButton = true
-    fileprivate var pageController = UIPageControl(frame: CGRect(x: 0, y: ScreenHeight - 50, width: ScreenWidth, height: 20))
+    fileprivate var pageController = UIPageControl(frame: CGRect(x: 0, y: ScreenH - 50, width: ScreenW, height: 20))
     override func viewDidLoad() {
         super.viewDidLoad()
         UIApplication.shared.setStatusBarHidden(false, with: .none)
@@ -73,7 +73,7 @@ extension AppStartVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        if scrollView.contentOffset.x == ScreenWidth * CGFloat(imageNames.count - 1) {
+        if scrollView.contentOffset.x == ScreenW * CGFloat(imageNames.count - 1) {
             let cell = collectionView?.cellForItem(at: IndexPath(row: imageNames.count - 1, section: 0)) as! AppStartCollectCell
             cell.setNextBtnHidden(false)
             isHiddenNextButton = false
@@ -82,11 +82,11 @@ extension AppStartVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if scrollView.contentOffset.x != ScreenWidth * CGFloat(imageNames.count - 1) && !isHiddenNextButton && scrollView.contentOffset.x > ScreenWidth * CGFloat(imageNames.count - 2) {
+        if scrollView.contentOffset.x != ScreenW * CGFloat(imageNames.count - 1) && !isHiddenNextButton && scrollView.contentOffset.x > ScreenW * CGFloat(imageNames.count - 2) {
             let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: IndexPath(row: imageNames.count - 1, section: 0)) as! AppStartCollectCell
             cell.setNextBtnHidden(true)
             isHiddenNextButton = true
         }
-        pageController.currentPage = Int(scrollView.contentOffset.x / ScreenWidth + 0.5)
+        pageController.currentPage = Int(scrollView.contentOffset.x / ScreenW + 0.5)
     }
 }

@@ -50,18 +50,16 @@ extension MessageV:UITextFieldDelegate{
             make.height.equalTo(PublicFunc.setHeight(size: 20))
         }
         
-        
-        cardVals = UILabel()
-        cardVals.textAlignment = .center
-        cardVals.font = UIFont.UiFontSize(size: 14)
-        cardVals.textAlignment = .center
-        cardVals.text = "弹出卡片"
-        cardVals.textColor = UIColor.colorWithCustom(0, g: 0, b: 0,alpha: 0.87)
-        cardVals.isUserInteractionEnabled = true
-        let cardGes = UITapGestureRecognizer(target: self, action: #selector(self.alter(_:)))
-        cardVals.addGestureRecognizer(cardGes)
-        addSubview(cardVals);
-        cardVals.snp_makeConstraints { (make) in
+
+        let firstBtn = UILabel() 
+        let previousPrice = "￥" + "1000"
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: previousPrice, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Light", size: 13.0)!])
+        attributeString.addAttribute(NSBaselineOffsetAttributeName, value: 0, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSForegroundColorAttributeName, value: UIColor.lightGray, range: NSRange(location:0,length:attributeString.length))
+        firstBtn.attributedText = attributeString
+        addSubview(firstBtn);
+        firstBtn.snp_makeConstraints { (make) in
             make.top.equalTo(fuVals.snp.bottom).offset(PublicFunc.setHeight(size:60))
             make.left.equalTo(0)
             make.width.equalTo(ScreenInfo.width)
@@ -83,7 +81,7 @@ extension MessageV:UITextFieldDelegate{
         addSubview(telField)
         telField.snp.makeConstraints { (make) in
             //make.centerY.equalTo(topPic)
-            make.top.equalTo(cardVals.snp.bottom).offset(0)
+            make.top.equalTo(firstBtn.snp.bottom).offset(0)
             make.left.equalTo(0)
             make.width.equalTo(ScreenInfo.width)
             make.height.equalTo(PublicFunc.setHeight(size: 36))

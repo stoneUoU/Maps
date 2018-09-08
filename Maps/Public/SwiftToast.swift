@@ -168,7 +168,7 @@ class ToastView: NSObject {
         
         let rect = lableView.getLableSize(text: text, maxWidth: 300)
         
-        print("\(rect.width)  \(rect.height)")
+        STLog("\(rect.width)  \(rect.height)")
         
         let bgView = UIView()
         bgView.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 0, alpha: 0.8)
@@ -296,7 +296,7 @@ class ToastView: NSObject {
     
     //添加点击事件
     func tapGesture(sender: UITapGestureRecognizer) {
-        print("点击uiview")
+        STLog("点击uiview")
         
         //移除最后一个
         if bufWindows.count > 0 {

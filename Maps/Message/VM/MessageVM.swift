@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import MethodSDK
 //protocol MessageVMDelegate: class {
 //    //注销成功或失败的状态，到控制器中执行相应的代码逻辑
 //    func toExecute(messageVM : MessageVM,strCode:Int)
@@ -15,9 +16,9 @@ import SwiftyJSON
 class MessageVM: NSObject {
     //weak var messageVMDelegate : MessageVMDelegate?
     func toTest(paras : [String : Any]? = nil, _ finishCallback : @escaping (_ result: Any) -> ()) {
-        AlamofireStart.requestData(.POST, options:"book_carts.php",parameters:paras,token:"",sign:1) { (result) in
+        NetToolsSDK.requestData(.POST, options:"book_carts.php",parameters:paras,token:"") { (result) in
             finishCallback(result)
-            print(JSON(result),"JSON(result)")
+            //print(JSON(result),"JSON(result)")
 //            if JSON(result)["status"] == 0{
 //                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
 //                    toast.showToast(text: "\(JSON(result)["info"])", pos: .Mid)

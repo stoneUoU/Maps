@@ -13,7 +13,7 @@ class PushVC: UIViewController,UIGestureRecognizerDelegate {
     var navigationBar:UINavigationBar?
     public var webView = WKWebView()
     public var progressView = UIProgressView()
-    var open_url:String = "http://www.baidu.com"
+    var open_url:String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpUI()

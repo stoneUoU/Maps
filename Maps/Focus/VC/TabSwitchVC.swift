@@ -17,32 +17,31 @@ class TabSwitchVC: UIViewController {
     var style = ZPStyle()
     var childVcs = [UIViewController]()
     //传值  将titleV的值传给contentV
-    static var VCBlock: ((_ TargetIndex:Int) -> ())?
-    var titleVals : [String]! {
-        didSet {
-            for _ in self.titleVals {
-                let vc = ContentVC()
-                childVcs.append(vc)
-            }
-            //直接刷新
-            //创建ZPSegmentBarView
-            segmentView = ZPSegmentBarView(frame: CGRect(x: 0, y: -NavigationBarH, width: view.bounds.width, height: view.bounds.height - TabBarH), titles: self.titleVals, style: style, childVcs: childVcs, parentVc: self)
-            //通过点击titleview闭包
-            segmentView?.titleView.clickBlock = { (intIndex) in
-                TabSwitchVC.VCBlock!(Int(self.titleIds[intIndex])!)
-                //
-            }
-            //通过滚动contentView闭包
-            segmentView?.contentView.clickBlock = { (intIndex) in
-                TabSwitchVC.VCBlock!(Int(self.titleIds[intIndex])!)
-            }
-            self.view.addSubview(segmentView!)
-
-        }
-    }
     var demoVals = [String]()
     var demoIds = [String]()
-    var titleIds = [String]()
+    static var netBlock: (() -> ())?
+    var titleIds : [String]!{
+        didSet {
+            for i in 0 ..< Int(self.titleIds.count)  {
+                let vc = ContentVC()
+                vc.intIndex = Int(self.titleIds[i])!
+                childVcs.append(vc)
+            }
+        }
+    }
+    var titleVals : [String]! {
+        didSet {
+            //创建ZPSegmentBarView
+            segmentView = ZPSegmentBarView(frame: CGRect(x: 0, y: -NavigationBarH, width: view.bounds.width, height: view.bounds.height - TabBarH), titles: self.titleVals, style: style, childVcs: childVcs, parentVc: self)
+            self.view.addSubview(segmentView!)
+        }
+    }
+    var netUseVals:String!
+    var noticeObser:Bool? {
+        didSet {
+            _ = SnailNotice.add(observer: self, selector: #selector(TabSwitchVC.setNet(notification:)), notification: .netChange)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -55,11 +54,20 @@ class TabSwitchVC: UIViewController {
         style.isScrollEnabled=true; //标题是否可以滚动,默认为true;
         style.isNeedScale=true      //标题文字是否缩放,默认为true;
         startR()
+
+        noticeObser = true //开启所有观察
+        //监听是否有网
+        netUseVals = keychain.get("ifnetUseful")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    //移除通知
+    deinit {
+        STLog("销毁，TabSwitchVC")
+        SnailNotice.remove(observer: self, notification: .netChange)
     }
 }
 extension TabSwitchVC{
@@ -85,8 +93,20 @@ extension TabSwitchVC{
                 }
                 self.demoVals.insert("最新", at: 0)
                 self.demoIds.insert("\(FreshID)", at: 0)
-                self.titleVals = self.demoVals
                 self.titleIds = self.demoIds
+                self.titleVals = self.demoVals
+            }
+        }
+    }
+    @objc func setNet(notification:NSNotification) {
+        netUseVals = notification.userInfo!["netUseful"] as! String
+        if netUseVals == "Useable"{
+            if keychain.get("currCtrl") == "\(self)"{
+                STLog("刷新，TabSwitchVC")
+                //闭包会主页刷新
+                if TabSwitchVC.netBlock != nil {
+                    TabSwitchVC.netBlock!()
+                }
             }
         }
     }

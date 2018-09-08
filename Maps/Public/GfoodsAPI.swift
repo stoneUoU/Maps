@@ -10,6 +10,7 @@ import Moya
 
 //请求分类
 public enum GfoodsAPI {
+    case searchPs([String : Any]) //请求个人中心数据
     case mineAPI([String : Any]) //请求个人中心数据
     case toLogin([String : Any]) //请求登录数据
     case toType //请求呱呱天地栏目分类
@@ -25,6 +26,8 @@ extension GfoodsAPI: AuthorizedTargetType {
     //各个请求的具体路径
     public var path: String {
         switch self {
+        case .searchPs(_):
+            return "/ApiSearch.php"
         case .mineAPI(_):
             return "/account/info"
         case .toLogin(_):
@@ -37,6 +40,8 @@ extension GfoodsAPI: AuthorizedTargetType {
     //请求类型
     public var method: Moya.Method {
         switch self {
+        case .searchPs(_) :
+            return .post
         case .mineAPI(_) :
             return .post
         case .toLogin(_):
@@ -50,7 +55,7 @@ extension GfoodsAPI: AuthorizedTargetType {
     //请求任务事件（这里附带上参数）
     public var task: Task {
         switch self {
-        case .mineAPI(let  paras):
+        case .mineAPI(let  paras),.searchPs(let  paras):
             var params: [String: Any] = [:]
             params = paras
             return .requestParameters(parameters: params,
@@ -80,11 +85,19 @@ extension GfoodsAPI: AuthorizedTargetType {
         switch self {
         case .mineAPI(let paras):
             return true
-        case .toLogin(let paras):
-            print(paras,"paras")
+        case .toLogin(let paras),.searchPs(let paras):
             return false
         case .toType:
             return false
         }
     }
 }
+
+
+//let requestClosure = { (endpoint: Endpoint<NetAPIManager>, done: @escaping MoyaProvider<NetAPIManager>.RequestResultClosure) in
+//
+//    guard var request = endpoint.urlRequest else { return }
+//
+//    request.timeoutInterval = 30    //设置请求超时时间
+//    done(.success(request))
+//}

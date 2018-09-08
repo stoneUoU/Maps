@@ -63,60 +63,65 @@ extension UIButton {
         self.imageEdgeInsets = imageEdgeInsets
     }
 }
-//public extension UIButton {
-//    private struct cs_associatedKeys {
-//        static var accpetEventInterval = "cs_acceptEventInterval"
-//        static var acceptEventTime = "cs_acceptEventTime"
+//extension UIButton {
+//    //防止按钮被连续点击，重复发送ajax请求
+//    private struct AssociatedKeys {
+//        static var xlx_defaultInterval:TimeInterval = 0
+//        static var xlx_customInterval = "xlx_customInterval"
+//        static var xlx_ignoreInterval = "xlx_ignoreInterval"
 //    }
-//    /**
-//     重复点击的时间间隔--自己手动随意设置
-//     利用运行时机制 将accpetEventInterval值修改
-//     */
-//    var cs_accpetEventInterval: TimeInterval {
+//    var customInterval: TimeInterval {
 //        get {
-//            if let accpetEventInterval = objc_getAssociatedObject(self, &cs_associatedKeys.accpetEventInterval) as? TimeInterval {
-//                return accpetEventInterval
+//            let xlx_customInterval = objc_getAssociatedObject(self, &AssociatedKeys.xlx_customInterval)
+//            if let time = xlx_customInterval {
+//                return time as! TimeInterval
+//            }else{
+//                return AssociatedKeys.xlx_defaultInterval
 //            }
-//            return 1.0
 //        }
 //        set {
-//            objc_setAssociatedObject(self, &cs_associatedKeys.accpetEventInterval, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//            objc_setAssociatedObject(self, &AssociatedKeys.xlx_customInterval,  newValue as TimeInterval ,.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 //        }
 //    }
-//    /**
-//     重复点击的时间间隔--自己手动随意设置
-//     利用运行时机制 将acceptEventTime值修改
-//     */
-//    var cs_acceptEventTime : TimeInterval {
+//
+//    var ignoreInterval: Bool {
 //        get {
-//            if let acceptEventTime = objc_getAssociatedObject(self, &cs_associatedKeys.acceptEventTime) as? TimeInterval {
-//                return acceptEventTime
-//            }
-//            return 1.0
+//            return (objc_getAssociatedObject(self, &AssociatedKeys.xlx_ignoreInterval) != nil)
 //        }
 //        set {
-//            objc_setAssociatedObject(self, &cs_associatedKeys.acceptEventTime, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//            objc_setAssociatedObject(self, &AssociatedKeys.xlx_ignoreInterval, newValue as Bool, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 //        }
 //    }
-//    /**
-//     重写初始化方法,在这个方法中实现在运行时方法替换
-//     */
+//
 //    override open class func initialize() {
-//        let changeBefore: Method = class_getInstanceMethod(self, #selector(UIButton.sendAction(_:to:for:)))
-//        let changeAfter: Method = class_getInstanceMethod(self, #selector(UIButton.cs_sendAction(action:to:for:)))
-//        method_exchangeImplementations(changeBefore, changeAfter)
+//        if self == UIButton.self {
+//            DispatchQueue.once(NSUUID().uuidString, block: {
+//                let systemSel = #selector(UIButton.sendAction(_:to:for:))
+//                let swizzSel = #selector(UIButton.mySendAction(_:to:for:))
+//
+//                let systemMethod = class_getInstanceMethod(self, systemSel)
+//                let swizzMethod = class_getInstanceMethod(self, swizzSel)
+//
+//
+//                let isAdd = class_addMethod(self, systemSel, method_getImplementation(swizzMethod), method_getTypeEncoding(swizzMethod))
+//
+//                if isAdd {
+//                    class_replaceMethod(self, swizzSel, method_getImplementation(systemMethod), method_getTypeEncoding(systemMethod));
+//                }else {
+//                    method_exchangeImplementations(systemMethod, swizzMethod);
+//                }
+//            })
+//        }
 //    }
-//    /**
-//     在这个方法中判断接收到当前事件的时间间隔是否满足我们所设定的间隔,会一直循环调用到满足才会return
-//     */
-//    func cs_sendAction(action: Selector, to target: AnyObject?, for event: UIEvent?) {
-//        if NSDate().timeIntervalSince1970 - self.cs_acceptEventTime < self.cs_accpetEventInterval {
-//            return
+//
+//    private dynamic func mySendAction(_ action: Selector, to target: Any?, for event: UIEvent?) {
+//        if !ignoreInterval {
+//            isUserInteractionEnabled = false
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+customInterval, execute: { [weak self] in
+//                self?.isUserInteractionEnabled = true
+//            })
 //        }
-//        if self.cs_accpetEventInterval > 0 {
-//            self.cs_acceptEventTime = NSDate().timeIntervalSince1970
-//        }
-//        self.cs_sendAction(action: action, to: target, for: event)
+//        mySendAction(action, to: target, for: event)
 //    }
 //}
 

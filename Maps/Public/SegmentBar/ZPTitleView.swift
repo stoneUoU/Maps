@@ -16,7 +16,7 @@ protocol ZPTitleViewDelegate : class {
 
 class ZPTitleView: UIView {
     // MARK: 回调属性  点击titlview时refresh闭包
-    var clickBlock: ((_ TargetIndex:Int) -> ())?
+    //var clickBlock: ((_ TargetIndex:Int) -> ())?
     // MARK : 属性
     weak var delegate : ZPTitleViewDelegate?
     var titles : [String]
@@ -30,7 +30,7 @@ class ZPTitleView: UIView {
         let deltaG = self.selectedRGB.1 - self.normalRGB.1
         let deltaB = self.selectedRGB.2 - self.normalRGB.2
 
-        //        print("R:\(deltaR) G:\(deltaG) B:\(deltaB)")
+        //        STLog("R:\(deltaR) G:\(deltaG) B:\(deltaB)")
         return (deltaR,deltaG,deltaB)
 
     }()
@@ -236,7 +236,7 @@ extension ZPTitleView
         // 2.通知代理
         // 可选链: 如果可选类型有值, 则执行代码, 没有值, 什么事情都不发生
         delegate?.titleView(self, targetIndex: targetLabel.tag)
-        self.clickBlock!(targetLabel.tag)
+        //self.clickBlock!(targetLabel.tag)
         // 3.调整Label
         addjustTitles(targetLabel)
     }

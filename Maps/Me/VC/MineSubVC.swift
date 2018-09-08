@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ActionButton
+//import ActionButton
 import SwiftyJSON
 //利用代理传值
 protocol PassValueDelegate:NSObjectProtocol {
@@ -23,7 +23,7 @@ class MineSubVC: UIViewController,UIGestureRecognizerDelegate {
     //声明导航条
     var navigationBar:UINavigationBar?
     //浮动按钮:
-    var actionButton: ActionButton!
+    //var actionButton: ActionButton!
     var btnSub = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,35 +145,35 @@ extension MineSubVC{
         let tweetImage = UIImage(named: "pop_Tweet.png")!
         let userImage = UIImage(named: "pop_User.png")!
 
-        let twitter = ActionButtonItem(title: "Twitter", image: twitterImage)
-        twitter.action = { item in print("Twitter...") }
-
-        let google = ActionButtonItem(title: "Google Plus", image: plusImage)
-        google.action = { item in print("Google Plus...") }
-        
-        let faceBook = ActionButtonItem(title: "FaceBook", image: safeImage)
-        faceBook.action = { item in print("faceBook...") }
-        
-        let wePhone = ActionButtonItem(title: "wePhone Plus", image: projectImage)
-        wePhone.action = { item in print("wePhone Plus...") }
-        
-        let messager = ActionButtonItem(title: "Messager Plus", image: tweetImage)
-        messager.action = { item in print("Messager Plus...") }
-        
-        let userBtn = ActionButtonItem(title: "UserBtn Plus", image: userImage)
-        userBtn.action = { item in
-            self.hidesBottomBarWhenPushed = true
-            let sb = UIStoryboard(name: "Mine", bundle:nil)
-            let vc = sb.instantiateViewController(withIdentifier: "SbTest") as! SbTestVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-
-        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google,faceBook, wePhone,messager, userBtn])
-        actionButton.action = { button in button.toggleMenu() }
-        actionButton.setTitle("+", forState: UIControlState())
-
-        actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
+//        let twitter = ActionButtonItem(title: "Twitter", image: twitterImage)
+//        twitter.action = { item in print("Twitter...") }
+//
+//        let google = ActionButtonItem(title: "Google Plus", image: plusImage)
+//        google.action = { item in print("Google Plus...") }
+//        
+//        let faceBook = ActionButtonItem(title: "FaceBook", image: safeImage)
+//        faceBook.action = { item in print("faceBook...") }
+//        
+//        let wePhone = ActionButtonItem(title: "wePhone Plus", image: projectImage)
+//        wePhone.action = { item in print("wePhone Plus...") }
+//        
+//        let messager = ActionButtonItem(title: "Messager Plus", image: tweetImage)
+//        messager.action = { item in print("Messager Plus...") }
+//        
+//        let userBtn = ActionButtonItem(title: "UserBtn Plus", image: userImage)
+//        userBtn.action = { item in
+//            self.hidesBottomBarWhenPushed = true
+//            let sb = UIStoryboard(name: "Mine", bundle:nil)
+//            let vc = sb.instantiateViewController(withIdentifier: "SbTest") as! SbTestVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+//        
+//
+//        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google,faceBook, wePhone,messager, userBtn])
+//        actionButton.action = { button in button.toggleMenu() }
+//        actionButton.setTitle("+", forState: UIControlState())
+//
+//        actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
     }
     
     func onAdd(){

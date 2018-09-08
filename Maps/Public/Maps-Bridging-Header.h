@@ -13,3 +13,8 @@
 //#import <AMapNaviKit/AMapNaviKit.h>
 #import "sqlite3.h"
 #import <time.h>
+#import "GDataXMLNode.h"
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
+#import "TestOC.h"
+

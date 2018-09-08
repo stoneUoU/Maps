@@ -105,13 +105,25 @@ extension MineVC:MineVDelegate,PassValueDelegate{
         self.view.addSubview(btnB)
         MGHelpView.addHelpViewWithDisplayView(CGRect(x:200,y:124,width:80,height:40), spotlightType: SpotlightType.spotlightTypeRect
             , textImageName: "addBillHelp", textLocationType: TextLocationType.bottomLeft, tagString: "888888", completion: nil)
-        
-        let firstBtn = UIButton()
+
+
+
+
+        let firstBtn = UILabel()
         firstBtn.frame = CGRect(x: 100, y: 100, width: ScreenInfo.width/3, height: 40)
-        firstBtn.backgroundColor = UIColor.red
-        firstBtn.setTitle("点击测试", for: .normal)
-        firstBtn.addTarget(self, action:#selector(MineVC.toMessage), for:.touchUpInside)
-        firstBtn.titleLabel?.textColor = UIColor.white
+        let previousPrice = "$" + "1000"
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: previousPrice, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Light", size: 11.0)!])
+        attributeString.addAttribute(NSBaselineOffsetAttributeName, value: 0, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSForegroundColorAttributeName, value: UIColor.lightGray, range: NSRange(location:0,length:attributeString.length))
+
+        let currentPrice : NSMutableAttributedString = NSMutableAttributedString(string: "8888" + "    ")
+        currentPrice.append(attributeString)
+        firstBtn.attributedText = currentPrice
+//        firstBtn.backgroundColor = UIColor.red
+//        firstBtn.setTitle("点击测试", for: .normal)
+//        firstBtn.addTarget(self, action:#selector(MineVC.toMessage), for:.touchUpInside)
+//        firstBtn.titleLabel?.textColor = UIColor.white
         //self.view.addSubview(firstBtn)
     }
     func onAdd(){
@@ -140,20 +152,20 @@ extension MineVC:MineVDelegate,PassValueDelegate{
         print("接收代理回调的值:\(passVals)")
     }
     func toSub(mineV: MineV) {
-        //shareView.show()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-            let mineSubV = MineSubVC()
-            //push方式
-            //将闭包传递到二级界面，在二级界面中调用
-            mineSubV.testClosure = {
-                [unowned self](newValue:String) ->Void
-                in
-                print(newValue,"闭包回调传值")
-            }
-            //代理传值
-            mineSubV.delegate = self
-            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: mineSubV,ifBackHaveTab:false)
-        })
+        shareView.show()
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+//            let mineSubV = MineSubVC()
+//            //push方式
+//            //将闭包传递到二级界面，在二级界面中调用
+//            mineSubV.testClosure = {
+//                [unowned self](newValue:String) ->Void
+//                in
+//                print(newValue,"闭包回调传值")
+//            }
+//            //代理传值
+//            mineSubV.delegate = self
+//            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: mineSubV,ifBackHaveTab:false)
+//        })
     }
     func toAlertView(mineV: MineV) {
         PublicFunc.presentToNaviCtrl(selfCtrl: self, otherCtrl: PresentVC())

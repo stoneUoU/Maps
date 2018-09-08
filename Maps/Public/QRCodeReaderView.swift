@@ -100,9 +100,9 @@ class QRCodeReaderView: UIView, AVCaptureMetadataOutputObjectsDelegate{
 //    func buildNavigationItem() {//242,71,28
 //        //设置状态栏颜色
 //        if UIDevice.isX() == true{
-//            navigationBar.frame = CGRect(x: 0, y: 0, width: ScreenWidth, height: 88)
+//            navigationBar.frame = CGRect(x: 0, y: 0, width: ScreenW, height: 88)
 //        }else{
-//            navigationBar.frame = CGRect(x: 0, y: 0, width: ScreenWidth, height: 64)
+//            navigationBar.frame = CGRect(x: 0, y: 0, width: ScreenW, height: 64)
 //        }
 //        navigationBar.backgroundColor = UIColor.colorWithHexString(hex:"#ff602f").withAlphaComponent(0)
 //        self.addSubview(navigationBar)

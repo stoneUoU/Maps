@@ -18,7 +18,7 @@ public extension UIView {
             self.frame.origin.x = newValue
         }
     }
-    
+
     var y : CGFloat {
         get {
             return self.frame.origin.y
@@ -27,7 +27,7 @@ public extension UIView {
             self.frame.origin.y = newValue
         }
     }
-    
+
     var width : CGFloat {
         get {
             return self.frame.size.width
@@ -36,7 +36,7 @@ public extension UIView {
             self.frame.size.width = newValue
         }
     }
-    
+
     var height : CGFloat {
         get {
             return self.frame.size.height
@@ -45,7 +45,7 @@ public extension UIView {
             self.frame.size.height = newValue
         }
     }
-    
+
     var origin : CGPoint {
         get {
             return self.frame.origin
@@ -64,7 +64,7 @@ public extension UIView {
     }
 }
 public extension UIView {
-    
+
     var top : CGFloat {
         get {
             return self.y
@@ -73,7 +73,7 @@ public extension UIView {
             self.y = newValue
         }
     }
-    
+
     var left : CGFloat {
         get {
             return self.x
@@ -82,7 +82,7 @@ public extension UIView {
             self.x = newValue
         }
     }
-    
+
     var bottom : CGFloat {
         get {
             return self.y + self.height
@@ -91,7 +91,7 @@ public extension UIView {
             self.y = newValue - self.height
         }
     }
-    
+
     var right : CGFloat {
         get {
             return self.x + self.width
@@ -100,7 +100,7 @@ public extension UIView {
             self.x = newValue - self.width
         }
     }
-    
+
     var centerX : CGFloat {
         get {
             return self.center.x
@@ -109,7 +109,7 @@ public extension UIView {
             self.center = CGPoint(x: newValue, y: self.center.y)
         }
     }
-    
+
     var centerY : CGFloat {
         get {
             return self.center.y
@@ -118,7 +118,7 @@ public extension UIView {
             self.center = CGPoint(x: self.center.x, y: newValue)
         }
     }
-    
+
     /// 获取响应链上的UIViewController
     ///
     /// - Returns: UIViewController?
@@ -150,4 +150,30 @@ public extension UIScreen {
         }
     }
     
+}
+
+extension UIView {
+
+
+    func findController() -> UIViewController! {
+        return self.findControllerWithClass(UIViewController.self)
+    }
+
+    func findNavigator() -> UINavigationController! {
+        return self.findControllerWithClass(UINavigationController.self)
+    }
+
+    func findControllerWithClass<T>(_ clzz: AnyClass) -> T? {
+        var responder = self.next
+        while(responder != nil) {
+            if (responder!.isKind(of: clzz)) {
+                return responder as? T
+            }
+            responder = responder?.next
+        }
+
+        return nil
+    }
+
+
 }

@@ -30,6 +30,7 @@ class PublicFunc: NSObject {
         //2.不传参使用:
         //PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: someV(),ifBackHaveTab:false)
         DispatchQueue.main.async{
+            //CustomTabBarVC.hideBar();
             otherCtrl.hidesBottomBarWhenPushed = true
             selfCtrl.navigationController?.pushViewController(otherCtrl , animated: true)
             ifBackHaveTab == false ? selfCtrl.hidesBottomBarWhenPushed = false : print("不显示tabbar")
@@ -62,6 +63,34 @@ class PublicFunc: NSObject {
 
         //2.不传参使用:
         //PublicFunc.presentToNaviCtrl(selfCtrl: self, otherCtrl: someV())
+        otherCtrl.modalTransitionStyle = .flipHorizontal //.partialCurl向上
+        otherCtrl.modalPresentationStyle = .popover
+//        case fullScreen
+//
+//        @available(iOS 3.2, *)
+//        case pageSheet
+//
+//        @available(iOS 3.2, *)
+//        case formSheet
+//
+//        @available(iOS 3.2, *)
+//        case currentContext
+//
+//        @available(iOS 7.0, *)
+//        case custom
+//
+//        @available(iOS 8.0, *)
+//        case overFullScreen
+//
+//        @available(iOS 8.0, *)
+//        case overCurrentContext
+//
+//        @available(iOS 8.0, *)
+//        case popover
+//
+//
+//        @available(iOS 7.0, *)
+//        case none
         DispatchQueue.main.async{
             selfCtrl.present(UINavigationController(rootViewController: otherCtrl), animated: true, completion: nil)
         }
@@ -85,5 +114,48 @@ class PublicFunc: NSObject {
         DispatchQueue.main.async{
             selfCtrl.dismiss(animated: true, completion: nil)
         }
+    }
+    //获取当前控制器
+    class  func getCurrCtrl() -> UIViewController? {
+
+        guard let window = UIApplication.shared.windows.first else {
+            return nil
+        }
+
+        var tempView: UIView?
+
+        for subview in window.subviews.reversed() {
+            if subview.classForCoder.description() == "UILayoutContainerView" {
+
+                tempView = subview
+
+                break
+            }
+        }
+
+        if tempView == nil {
+
+            tempView = window.subviews.last
+        }
+
+        var nextResponder = tempView?.next
+
+        var next: Bool {
+            return !(nextResponder is UIViewController) || nextResponder is UINavigationController || nextResponder is UITabBarController
+        }
+
+        while next{
+
+            tempView = tempView?.subviews.first
+
+            if tempView == nil {
+
+                return nil
+            }
+
+            nextResponder = tempView!.next
+        }
+
+        return nextResponder as? UIViewController
     }
 }

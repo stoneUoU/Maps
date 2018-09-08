@@ -22,7 +22,7 @@ struct AuthPlugin: PluginType {
             let target = target as? AuthorizedTargetType,
             target.needsAuth
             else {
-                print(request)
+                STLog(request)
                 return request
         }
         var request = request

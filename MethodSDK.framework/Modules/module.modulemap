@@ -1,0 +1,11 @@
+framework module MethodSDK {
+  umbrella header "MethodSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module MethodSDK.Swift {
+    header "MethodSDK-Swift.h"
+    requires objc
+}

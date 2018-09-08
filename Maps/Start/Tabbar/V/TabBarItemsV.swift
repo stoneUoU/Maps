@@ -13,17 +13,18 @@ protocol TabBarItemsVDelegate: NSObjectProtocol {
     
     func didSelectItemAtIndex(view: TabBarItemsV, index: Int) -> Void
     func didClickCenterItem(view: TabBarItemsV) -> Void
+    func presentLoginVC(view: TabBarItemsV) -> Void
 }
 
 class TabBarItemsV: UIView {
-    
+    static var ifLogin:Bool = false
     var selectedIndex = 0
     weak var delegate: TabBarItemsVDelegate?
     
-    var screenWidth: CGFloat {
+    var ScreenW: CGFloat {
         return UIScreen.main.bounds.width
     }
-    var screenHeight: CGFloat {
+    var ScreenH: CGFloat {
         return UIScreen.main.bounds.height
     }
     
@@ -78,40 +79,70 @@ class TabBarItemsV: UIView {
     ///
     /// - Parameter sender: 按钮对象
     @objc func tabBarItemClicked(sender: UIButton) {
-        
         let tempIndex = sender.tag - 100
-        if tempIndex == btns.count / 2 {
-            delegate?.didClickCenterItem(view: self)
-            return
-        }
-        if tempIndex != selectedIndex {
-            
-            let oldBtn = btns[selectedIndex]
-            let newBtn = sender
-            
-            oldBtn.isSelected = false
-            newBtn.isSelected = true
-            
-            selectedIndex = tempIndex
-            if delegate != nil {
-                
-                switch selectedIndex {
-                case 0:
-                    delegate?.didSelectItemAtIndex(view: self, index: 0)
-                case 1:
-                    delegate?.didSelectItemAtIndex(view: self, index: 1)
-                case 2:
-                    delegate?.didSelectItemAtIndex(view: self, index: 2)
-                case 3:
-                    delegate?.didSelectItemAtIndex(view: self, index: 3)
-                case 4:
-                    delegate?.didSelectItemAtIndex(view: self, index: 4)
-                default:
-                    break
+        if tempIndex != 4{
+            if tempIndex == btns.count / 2 {
+                delegate?.didClickCenterItem(view: self)
+                return
+            }
+            if tempIndex != selectedIndex {
+
+                let oldBtn = btns[selectedIndex]
+                let newBtn = sender
+                oldBtn.isSelected = false
+                newBtn.isSelected = true
+                selectedIndex = tempIndex
+                if delegate != nil {
+
+                    switch selectedIndex {
+                    case 0:
+                        delegate?.didSelectItemAtIndex(view: self, index: 0)
+                    case 1:
+                        delegate?.didSelectItemAtIndex(view: self, index: 1)
+                    case 2:
+                        delegate?.didSelectItemAtIndex(view: self, index: 2)
+                    case 3:
+                        delegate?.didSelectItemAtIndex(view: self, index: 3)
+                    case 4:
+                        delegate?.didSelectItemAtIndex(view: self, index: 4)
+                    default:
+                        break
+                    }
                 }
             }
+        }else{
+            if TabBarItemsV.ifLogin{
+                if tempIndex == btns.count / 2 {
+                    delegate?.didClickCenterItem(view: self)
+                    return
+                }
+                if tempIndex != selectedIndex {
+                    let oldBtn = btns[selectedIndex]
+                    let newBtn = sender
+                    oldBtn.isSelected = false
+                    newBtn.isSelected = true
+                    selectedIndex = tempIndex
+                    if delegate != nil {
+                        switch selectedIndex {
+                        case 0:
+                            delegate?.didSelectItemAtIndex(view: self, index: 0)
+                        case 1:
+                            delegate?.didSelectItemAtIndex(view: self, index: 1)
+                        case 2:
+                            delegate?.didSelectItemAtIndex(view: self, index: 2)
+                        case 3:
+                            delegate?.didSelectItemAtIndex(view: self, index: 3)
+                        case 4:
+                            delegate?.didSelectItemAtIndex(view: self, index: 4)
+                        default:
+                            break
+                        }
+                    }
+                }
+            }else{
+                delegate?.presentLoginVC(view: self)
+            }
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,8 +153,8 @@ class TabBarItemsV: UIView {
         super.layoutSubviews()
         
         let centerIndex = titles.count / 2
-        let centerSize = CGSize(width: 64, height: 64)
-        let normalBtnWith = Double(screenWidth - centerSize.width) / Double(btns.count - 1)
+        let centerSize = CGSize(width: centerVW, height: centerVW)
+        let normalBtnWith = Double(ScreenW - centerSize.width) / Double(btns.count - 1)
         
         for index in 0..<btns.count {
             

@@ -34,8 +34,8 @@ open class MGHelpView: UIView {
     /*! 显示的提示文字 */
     public var textImageView:UIImageView!
     
-    let screenWidth = UIScreen.main.bounds.width
-    let screenHeight = UIScreen.main.bounds.height
+    let ScreenW = UIScreen.main.bounds.width
+    let ScreenH = UIScreen.main.bounds.height
     
     /*! 聚光灯View */
     public var displayView:UIView?{
@@ -104,13 +104,13 @@ open class MGHelpView: UIView {
         if type == nil
         {
             
-            if rect.midX <= screenWidth/3
+            if rect.midX <= ScreenW/3
             {
-                if rect.midY <= screenHeight/3
+                if rect.midY <= ScreenH/3
                 {
                     type = .bottomRight
                 }
-                else if rect.midY >= screenHeight/3*2
+                else if rect.midY >= ScreenH/3*2
                 {
                     type = .topLeft
                 }
@@ -119,13 +119,13 @@ open class MGHelpView: UIView {
                     type = .right
                 }
             }
-            else if rect.midX >= screenWidth/3*2
+            else if rect.midX >= ScreenW/3*2
             {
-                if rect.midY <= screenHeight/3
+                if rect.midY <= ScreenH/3
                 {
                     type = .bottomLeft
                 }
-                else if rect.midY >= screenHeight/3*2
+                else if rect.midY >= ScreenH/3*2
                 {
                     type = .topLeft
                 }
@@ -136,11 +136,11 @@ open class MGHelpView: UIView {
             }
             else
             {
-                if rect.midY <= screenHeight/3
+                if rect.midY <= ScreenH/3
                 {
                     type = .bottom
                 }
-                else if rect.midY >= screenHeight/3*2
+                else if rect.midY >= ScreenH/3*2
                 {
                     type = .top
                 }

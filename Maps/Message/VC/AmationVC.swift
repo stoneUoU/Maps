@@ -60,7 +60,7 @@ extension AmationVC{
         sgmentControl?.selectedSegmentIndex=0 //默认选中第1项
         sgmentControl?.addTarget(self, action: #selector(updateView), for: UIControlEvents.valueChanged)
         sgmentControl?.snp.makeConstraints{(make) in
-            make.width.equalTo(ScreenWidth/2)
+            make.width.equalTo(ScreenW/2)
         }
         navigationItem.titleView = sgmentControl!
         return navigationItem

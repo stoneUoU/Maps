@@ -29,4 +29,6 @@ pod 'ObjectMapper'
 pod 'Result'
 pod 'RxCocoa'
 pod 'FSCalendar'
+pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+pod 'ZLaunchAdVC'
 end

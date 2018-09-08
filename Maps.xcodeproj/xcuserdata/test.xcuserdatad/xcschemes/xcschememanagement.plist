@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>FirstSDKTarget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>35</integer>
+		</dict>
 		<key>Maps.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>31</integer>
+			<integer>0</integer>
+		</dict>
+		<key>MapsTarget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>35</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>

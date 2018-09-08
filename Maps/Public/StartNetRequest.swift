@@ -10,7 +10,7 @@ import Alamofire
 import AFNetworking
 import SwiftyJSON
 // Swift的枚举支持任意数据类型,不需要,分隔
-enum PSHTTPMethod{
+enum STHTTPMethod{
     case GET
     case POST
 }
@@ -23,7 +23,7 @@ class SynchronousNetWork: AFHTTPSessionManager {
         let Urls = URL.init(string: GfoodsUrl+options)
         let request = NSMutableURLRequest.init(url: Urls!)
         request.timeoutInterval = 30
-        request.httpMethod = "\(PSHTTPMethod.GET)"
+        request.httpMethod = "\(STHTTPMethod.GET)"
         request.httpBody = paras?.data(using: String.Encoding.utf8)
         if(token != nil || token != ""){
             request.setValue(token, forHTTPHeaderField: "token")
@@ -49,7 +49,7 @@ class SynchronousNetWork: AFHTTPSessionManager {
         str = str + Str!
         let request = NSMutableURLRequest.init(url: Urls!)
         request.timeoutInterval = 30
-        request.httpMethod = "\(PSHTTPMethod.POST)"
+        request.httpMethod = "\(STHTTPMethod.POST)"
         request.httpBody = str.data(using: String.Encoding.utf8)
         if(token != nil || token != ""){
             request.setValue(token, forHTTPHeaderField: "token")
@@ -76,7 +76,7 @@ class AsynchronousNetWork: AFHTTPSessionManager  {
         let Urls = URL.init(string: GfoodsUrl+options)
         let request = NSMutableURLRequest.init(url: Urls!)
         request.timeoutInterval = 30
-        request.httpMethod = "\(PSHTTPMethod.GET)"
+        request.httpMethod = "\(STHTTPMethod.GET)"
         request.httpBody = paras?.data(using: String.Encoding.utf8)
         if(token != nil || token != ""){
             request.setValue(token, forHTTPHeaderField: "token")
@@ -102,7 +102,7 @@ class AsynchronousNetWork: AFHTTPSessionManager  {
         str = str + Str!
         let request = NSMutableURLRequest.init(url: Urls!)
         request.timeoutInterval = 30
-        request.httpMethod = "\(PSHTTPMethod.POST)"
+        request.httpMethod = "\(STHTTPMethod.POST)"
         request.httpBody = str.data(using: String.Encoding.utf8)
         if(token != nil || token != ""){
             request.setValue(token, forHTTPHeaderField: "token")
@@ -120,40 +120,6 @@ class AsynchronousNetWork: AFHTTPSessionManager  {
         dataTask.resume()
     }
 }
-class NetworkTools {
-    
-    func requestData(_ type : PSHTTPMethod, options : String, parameters : [String : Any]? = nil, token:String,sign: Int, finishedCallback :  @escaping (_ result : Any) -> ()) {
-        //STLog(GfoodsUrl+options)
-        // 1.获取类型
-        let method = type == .GET ? HTTPMethod.get : HTTPMethod.post
-        // 2.发送网络请求
-        Alamofire.request(sign == 0 ? GfoodsUrl+options : IUrl+options, method: method, parameters: parameters,encoding: JSONEncoding.default, headers:["Authorization":token]).responseJSON{ (response) in
-            // 3.获取结果
-            guard let result = response.result.value else {
-                return
-            }
-            // 4.将结果回调出去
-            finishedCallback(result)
-        }
-    }
-}
 let netSyStart=SynchronousNetWork()     //同步请求对象
 let netAsyStart=AsynchronousNetWork()   //异步请求对象
 
-//class NetworkTools {
-//
-//    func requestData(_ type : PSHTTPMethod, options : String, parameters : [String : Any]? = nil, finishedCallback :  @escaping (_ result : Any) -> ()) {
-//        // 1.获取类型
-//        let method = type == .GET ? HTTPMethod.get : HTTPMethod.post
-//        // 2.发送网络请求
-//        Alamofire.request(IUrl+options, method: method, parameters: parameters,encoding: JSONEncoding.default).responseJSON{ (response) in
-//            // 3.获取结果
-//            guard let result = response.result.value else {
-//                return
-//            }
-//            // 4.将结果回调出去
-//            finishedCallback(result)
-//        }
-//    }
-//}
-let AlamofireStart=NetworkTools()   //异步请求对象

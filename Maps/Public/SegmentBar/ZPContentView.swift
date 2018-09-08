@@ -15,7 +15,7 @@ private let kContentCellID = "kContentCellID"
 
 class ZPContentView: UIView {
     // MARK: 回调属性  拖动contentView时refresh闭包
-    var clickBlock: ((_ TargetIndex:Int) -> ())?
+    //var clickBlock: ((_ TargetIndex:Int) -> ())?
     // MARK : 属性
     weak var delegate :ZPContentViewDelegate?
     fileprivate lazy var startOffsetX : CGFloat = 0
@@ -132,7 +132,7 @@ extension ZPContentView : UICollectionViewDelegate
     {
 
         let targetIndex = Int(collectionView.contentOffset.x / collectionView.bounds.width)
-        self.clickBlock!(targetIndex)
+        //self.clickBlock!(targetIndex)
         delegate?.contentView(self, didEndScroll: targetIndex)
     }
 

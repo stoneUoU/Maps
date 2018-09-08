@@ -13,10 +13,22 @@ import Whisper
 import Moya
 import SwiftyJSON
 import RxSwift
+import MethodSDK
 //class MyPinAnnotation:MAPointAnnotation{}
 class FindVC: UIViewController{
+    var shareView:YSJShareView!
     var leftButton:UIButton?
     //var coRate:CLLocationCoordinate2D?
+    //物流公司号
+    var ShipperCode = "YTO"
+    //快递单号
+    var LogisticCode = "887102266424600383"
+    var adDate: Date? {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return f.date(from: "2016-10-21 14:45:41")
+    }
+    var oDatas:[UoUDatas] = [UoUDatas]()
     fileprivate lazy var findVM : FindVM = FindVM()
     lazy var findV: FindV = {[weak self] in
         let Frame = CGRect(x: 0, y: 0, width: ScreenInfo.width, height: ScreenInfo.height)
@@ -84,15 +96,42 @@ class FindVC: UIViewController{
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        //self.buildNavigationItem()
         self.findV.buildNavigationItem()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.navigationController?.navigationBar.isHidden = true
+
+        //是否进入广告详情：解包
+        if let noticeSign = keychain.getBool("noticeD") {
+            if noticeSign{
+                //window?.rootViewController = AppStartVC()
+                let vc = AdsVC()
+                vc.hidesBottomBarWhenPushed = true
+                vc.open_url = "https://www.baidu.com";
+                self.navigationController?.pushViewController(vc, animated: true)
+                keychain.set(false, forKey: "noticeD");
+            }
+        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        CustomTabBarVC.showBar(animated: true);
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        //  用于加载启动页数据，可放到网络请求的回调中，图片异步缓存
+//        LaunchADView.setValue(imgURL: "http://cdn.duitang.com/uploads/item/201408/27/20140827062302_ymAJe.jpeg", webURL: "https://www.baidu.com", showTime: 5)
+//
+//        //  用于显示启动页。若启动数据更新，则将在下次启动后展示新的启动页
+//        LaunchADView.show { (url) in
+//            let vc = AdsVC()
+//            vc.hidesBottomBarWhenPushed = true
+//            vc.open_url = url!
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+
         self.setupUI()
         self.view.backgroundColor = UIColor.white
+
         noticeObser = true //开启所有观察
         //监听是否有网
         netUseVals = keychain.get("ifnetUseful")
@@ -142,9 +181,9 @@ class FindVC: UIViewController{
         
         //func startNet(){
         func startNet(){
-            Network.request(.mineAPI(["opr":"search","data":["vals":""]] as [String : Any]), success: { json in
+            Network.request(Authos:Authos,.mineAPI(["opr":"search","data":["vals":""]] as [String : Any]), success: { json in
                 //获取歌曲信息
-                //print(json,"获取歌曲信息")
+                //STLog(json)
             }, error: { statusCode in
                 //服务器报错等问题
                 //print("请求错误！错误码：\(statusCode)")
@@ -153,6 +192,21 @@ class FindVC: UIViewController{
                 //print("请求失败！错误信息：\(error.errorDescription ?? "")")
             })
         }
+        func searchPs(){
+            Network.request(Authos:"",.searchPs(["OrderCode": "","ShipperCode": ShipperCode,"LogisticCode": LogisticCode] as [String : Any]), success: { json in
+                //打印物流信息
+                //STLog(json)
+            }, error: { statusCode in
+                //服务器报错等问题
+                //STLog("请求错误！错误码：\(statusCode)")
+            }, failure: { error in
+                //没有网络等问题
+                //STLog("请求失败！错误信息：\(error.errorDescription ?? "")")
+                HudTips.hideHUD(ctrl: self)
+            })
+
+        }
+        //searchPs()
         startNet()
 
 //        func startRx(){
@@ -190,6 +244,19 @@ class FindVC: UIViewController{
         //async()
         //async()
 
+        shareView = YSJShareView.init(frame: CGRect(x:0, y:UIScreen.main.bounds.height - 180, width:UIScreen.main.bounds.width, height:180))
+        shareView._delegate = self
+        shareView.addItem(title: "", withImage: UIImage(named: "share_qq")!)
+        shareView.addItem(title: "", withImage: UIImage(named: "share_friend")!)
+        shareView.addItem(title: "", withImage: UIImage(named: "share_weibo")!)
+        shareView.addItem(title: "", withImage: UIImage(named: "share_weChat")!)
+
+//        let sdkC = FirstSDKClass()
+//        print(sdkC.addName(name: "Stone"))
+
+        //let sdkC = FirstSDKClass()
+        print(FirstSDKClass.developer(name: "Stone_磊"))
+
     }
     //    override func viewWillDisappear(_ animated: Bool) {
     //        super.viewWillDisappear(animated)
@@ -197,6 +264,7 @@ class FindVC: UIViewController{
     //    }
     //移除通知
     deinit {
+        //STLog("销毁，FindVC")
         SnailNotice.remove(observer: self, notification: .netChange)
     }
 
@@ -363,7 +431,99 @@ class FindVC: UIViewController{
 //    }
 //}
 
-extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate{
+extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate,YSJShareViewDelegate{
+    func shareBtnClick(index: Int) {
+        //STLog("99999")
+    }
+    //去TestVC
+    func toTestVC(horMoveV: HorMoveV) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            let testCtrlV = TestCtrlVC()
+            testCtrlV.someVals = ["showCtrl":1]
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: testCtrlV,ifBackHaveTab:false)
+        })
+    }
+
+    func toChange(horMoveV: HorMoveV) {
+        TabBarItemsV.ifLogin = false;
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            let demo3V = Demo3VC()
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: demo3V,ifBackHaveTab:false)
+        })
+    }
+
+    //去支付宝支付
+    func toAlipay(horMoveV: HorMoveV) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: AlipayVC(),ifBackHaveTab:false)
+        })
+    }
+//    lazy var data: [TransitionType] = [
+//        .bottomToTop,
+//        .topToBottom,
+//        .leftToRight,
+//        .rightToLeft,
+//        .overlayVertical,
+//        .overlayHorizontal,
+//        ]
+    //去XML解析
+    func toXML(horMoveV: HorMoveV) {
+        MethodFuncSDK.pushToNextCtrl(selfCtrl: self, otherCtrl: TestSDKVC())
+        //StToastSDK().showToast(text:"登录成功",type: Pos )
+//        let controller = ADController(type: TransitionType.leftToRight)
+//        //let flag = controller.isCanShowing(date: adDate!)
+//        controller.images = [UIImage(named: "guide_35_1.png")!];//(1 ... 4).flatMap {  }
+//        //controller.isShowPageControl = true
+//        //controller.isAllowLooping = true
+//        controller.selectedHandel = { idx, controller in
+//            //STLog(idx);
+//            controller.dismiss(animated: true, completion: nil);
+//            let vc = AdsVC()
+//            vc.hidesBottomBarWhenPushed = true
+//            vc.open_url = "https://www.baidu.com";
+//            self.navigationController?.pushViewController(vc, animated: true)
+//            //
+//        }
+//        present(controller, animated: true) {}
+////        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+////            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: XMLCtrl(),ifBackHaveTab:false)
+////        })
+    }
+
+    func toMHPlayer(horMoveV: HorMoveV) {
+        //shareView.show()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: MHPlayerVC(),ifBackHaveTab:false)
+        })
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+//            self.navigationController?.pushViewController(MHPlayerVC(), animated: true)
+//        })
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+//            self.shareView.show()
+//            //let fpCenterV = SortVC()
+//            //push方式
+//            //self.hidesBottomBarWhenPushed = true
+//            //self.navigationController?.pushViewController(fpCenterV , animated: true)
+//            //self.hidesBottomBarWhenPushed = false
+//        })
+    }
+
+    func toStep(horMoveV: HorMoveV) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: StepTopVC(),ifBackHaveTab:false)
+        })
+    }
+    func toAddressList(horMoveV: HorMoveV) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: AddressListVC(),ifBackHaveTab:false)
+        })
+    }
+    func toSpring(horMoveV: HorMoveV) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            PublicFunc.pushToNextCtrl(selfCtrl: self, otherCtrl: SpringVC(),ifBackHaveTab:false)
+        })
+    }
+
     func toWhisper(horMoveV: HorMoveV) {
 
 //        Network.request(.toType, success: { json in
@@ -378,42 +538,44 @@ extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate{
 //        })
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+
             let backCellV = BackCellVC()
             //push方式
-            self.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(backCellV , animated: true)
-            self.hidesBottomBarWhenPushed = false
+            //self.hidesBottomBarWhenPushed = true
+            if let currCtrl = PublicFunc.getCurrCtrl(){
+                currCtrl.navigationController?.pushViewController(backCellV , animated: true)
+            }
+            //self.hidesBottomBarWhenPushed = false
         })
     }
+
     func toDetail(horMoveV: HorMoveV) {
         //使用我们的provider进行网络请求（该请求不需要授权）
-        HttpbinProvider.request(.toLogin(["opr": "add", "data": ["registration_id": "", "account": "15717914505", "password": "66fa03f6ba652e2850d5e19d3a3fa9fc"]] as [String : Any])) { result in
-
-            switch result {
-            case let .success(response):
-                let statusCode = response.statusCode // 响应状态码：200, 401, 500...
-                let data = JSON(response.data) // 响应数据
-                //print(data,"oooo")
-            //继续做一些其它事情....
-            case let .failure(error):
-                //错误处理....
-                break
-            }
-
-//            if case let .success(response) = result {
-//                //解析数据
-//                let data = try? response.mapJSON()
-//                let json = JSON(data!)
-//                print(json)
-//                //...
+//        HttpbinProvider.request(.toLogin(["opr": "add", "data": ["registration_id": "", "account": "15717914505", "password": "66fa03f6ba652e2850d5e19d3a3fa9fc"]] as [String : Any])) { result in
+//
+//            switch result {
+//            case let .success(response):
+//                let statusCode = response.statusCode // 响应状态码：200, 401, 500...
+//                let data = JSON(response.data) // 响应数据
+//                //print(data,"oooo")
+//            //继续做一些其它事情....
+//            case let .failure(error):
+//                //错误处理....
+//                break
 //            }
-        }
+//
+////            if case let .success(response) = result {
+////                //解析数据
+////                let data = try? response.mapJSON()
+////                let json = JSON(data!)
+////                print(json)
+////                //...
+////            }
+//        }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-            let adapcellV = AdapcellVC()
-            //push方式
-            self.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(adapcellV , animated: true)
-            self.hidesBottomBarWhenPushed = false
+            let fpCenterV = GoodsDetailVC()
+            //self.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(fpCenterV , animated: true)
         })
     }
     func setupUI(){
@@ -428,12 +590,23 @@ extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate{
     }
     @objc func setNet(notification:NSNotification) {
         netUseVals = notification.userInfo!["netUseful"] as! String
-        //print(netUseVals,"网络变化")
+        if netUseVals == "Useable"{
+            if keychain.get("currCtrl") == "\(self)"{
+                //STLog("刷新，FindVC")
+            }
+        }
     }
     func toSuccess(loginV: LoginV) {
 
     }
     func getDatas(){
+//        for i in 0..<Int(self.findVM.dataArr.count) {
+//            let dataOne = UoUDatas(png: "\(self.findVM.dataArr[i]["png"]!)",vals:"\(self.findVM.dataArr[i]["vals"]!)");
+//            self.oDatas.append(dataOne)
+//        }
+//        self.findV.horMoveV.oDatas = self.oDatas
+
+
         if netUseVals == "Useable"{
             // 2.创建Group
             let dGroup = DispatchGroup()
@@ -446,11 +619,13 @@ extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate{
                 self.findV.horMoveV.oDatas = self.findVM.oDatas
                 dGroup.leave()
                 HudTips.hideHUD(ctrl:self)
-                StToast().showToast(text:"登录成功",type: pos )
+                //StToast().showToast(text:"登录成功",type: pos )
             }
         }else{
-            StToast().showToast(text:"\(missNetTips)",type:Pos)
+            StToastSDK().showToast(text:"\(missNetTips)",type: Pos )
         }
+
+
     }
     func toFresh(findV:FindV){
         if netUseVals == "Useable"{
@@ -474,12 +649,12 @@ extension FindVC:UIScrollViewDelegate,FindVDelegate,HorMoveVDelegate{
                 self.findV.horMoveV.oDatas = self.findVM.oDatas
                 dGroup.leave()
                 HudTips.hideHUD(ctrl:self)
-                StToast().showToast(text:"刷新成功，来呀，互相杀害刷新成功，来呀，互相杀害刷新成功，来呀，互相杀害",type:.top)
+                StToastSDK().showToast(text:"刷新成功，来呀，互相杀害刷新成功，来呀，互相杀害刷新成功，来呀，互相杀害,来呀，互相杀害刷新成功，来呀，互相杀害",type: Pos )
                 findV.freshH.endRefreshing()
                 //findV.scrollV.mj_header.endRefreshing()
             }
         }else{
-            StToast().showToast(text:"\(missNetTips)",type:Pos)
+            StToastSDK().showToast(text:"\(missNetTips)",type: Pos )
             findV.freshH.endRefreshing()
         }
     }

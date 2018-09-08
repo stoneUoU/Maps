@@ -17,7 +17,7 @@ class AppStartCollectCell: UICollectionViewCell {
     
     
     fileprivate let newImageView = UIImageView(frame: ScreenBounds)
-    fileprivate let nextBtn = UIButton(frame: CGRect(x: (ScreenWidth - 100)*0.5, y: ScreenHeight - 110, width: 100, height: 33))
+    fileprivate let nextBtn = UIButton(frame: CGRect(x: (ScreenW - 100)*0.5, y: ScreenH - 110, width: 100, height: 33))
     
     var newImage:UIImage? {
         didSet{
@@ -47,7 +47,7 @@ class AppStartCollectCell: UICollectionViewCell {
 //        UserDefaults.standard.set(true, forKey:"ifO")
 //        UserDefaults .standard .synchronize()
 //        NotificationCenter.default.post(name: Notification.Name(rawValue: "AppStartCtrlDidFinish"), object: nil)
-        keychain.set(true, forKey: "ifY")
+        keychain.set(true, forKey: "ifU")
         SnailNotice.post(notification: .startFinish,object: nil,passDicts:nil)
     }
     //移除通知

@@ -10,6 +10,15 @@ protocol HorMoveVDelegate: class {
     //去子页面
     func toDetail(horMoveV : HorMoveV)
     func toWhisper(horMoveV : HorMoveV)
+    func toStep(horMoveV : HorMoveV)
+    func toAddressList(horMoveV : HorMoveV)
+    func toSpring(horMoveV : HorMoveV)
+    func toMHPlayer(horMoveV : HorMoveV)
+    func toXML(horMoveV : HorMoveV)
+    func toAlipay(horMoveV : HorMoveV)
+    func toTestVC(horMoveV : HorMoveV)
+    //修改手势密码
+    func toChange(horMoveV : HorMoveV)
 }
 class  HorMoveV: UIView {
     weak var horMoveVDelegate : HorMoveVDelegate?
@@ -103,21 +112,21 @@ UICollectionViewDelegateFlowLayout{
         }else if (indexPath as NSIndexPath).row == 1{
             horMoveVDelegate?.toWhisper(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 2{
-            STLog("我是打印信息")
+            horMoveVDelegate?.toStep(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 3{
-            print("4")
+            horMoveVDelegate?.toAddressList(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 4{
-            print("5")
+            horMoveVDelegate?.toSpring(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 5{
-            print("6")
+            horMoveVDelegate?.toMHPlayer(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 6{
-            print("7")
+            horMoveVDelegate?.toXML(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 7{
-            print("8")
+            horMoveVDelegate?.toAlipay(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 8{
-            print("9")
+            horMoveVDelegate?.toTestVC(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 9{
-            print("10")
+            horMoveVDelegate?.toChange(horMoveV: self)
         }else if (indexPath as NSIndexPath).row == 10{
             print("11")
         }else{

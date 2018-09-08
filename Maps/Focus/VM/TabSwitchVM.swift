@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import MethodSDK
 //protocol QuackVMDelegate: class {
 //    //获取系统信息是否成功，到控制器中执行相应的代码逻辑
 //    func toExecute(quackVM:QuackVM,strCode:Int)
@@ -19,7 +20,7 @@ class TabSwitchVM: NSObject {
     var tabSwitchMs:[TabSwitchMs] = [TabSwitchMs]()
     var contentMs : [ContentMs] = [ContentMs]()
     func getTitleInfos(paras : [String : Any]? = nil, _ finishCallback : @escaping (_ result: Any) -> ()) {
-        AlamofireStart.requestData(.POST, options:"/app/news/type/list",parameters:paras, token: ssid, sign: 0) { (result) in
+        NetToolsSDK.requestData(.POST, options:"/app/news/type/list",parameters:paras, token: Authos) { (result) in
             if JSON(result)["code"] == 0{
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
                     self.tabSwitchMs.removeAll()
@@ -31,14 +32,14 @@ class TabSwitchVM: NSObject {
                 })
             }else{
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-                    StToast().showToast(text:"\(JSON(result)["msg"])",type:Pos)
+                    StToastSDK().showToast(text:"\(JSON(result)["msg"])",type:Pos)
                 })
             }
         }
     }
 
     func fetchDatas(paras : [String : Any]? = nil, _ finishCallback : @escaping (_ result: Any) -> ()) {
-        AlamofireStart.requestData(.POST, options:"/app/news/list",parameters:paras, token: ssid, sign: 0)  { (result) in
+        NetToolsSDK.requestData(.POST, options:"/app/news/list",parameters:paras, token: Authos)  { (result) in
             finishCallback(result)
         }
     }

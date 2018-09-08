@@ -7,6 +7,7 @@
 //
 import UIKit
 import SwiftyJSON
+import MethodSDK
 class FindVM: NSObject {
     var dataArr = [
         ["png":"pop_2FA.png","vals":"京东超市"],
@@ -34,7 +35,7 @@ class FindVM: NSObject {
     var titles:[String] = [String]();
     var imagesURLStrings:Array<String> = [];
     func getInfos(paras : [String : Any]? = nil, _ finishCallback : @escaping (_ result: Any) -> ()) {
-        AlamofireStart.requestData(.POST, options:"account/info",parameters:paras, token: ssid,sign:0) { (result) in
+        NetToolsSDK.requestData(.POST, options:"account/info",parameters:paras, token: Authos) { (result) in
             self.titles = ["我是林磊1",
                "如果代码在使用过程中出现问题",
                "您可以发邮件到coderjianfeng@foxmail.com,我是Stone我是Stone我是Stone"
@@ -53,7 +54,7 @@ class FindVM: NSObject {
         }
     }
     func getFresh(paras : [String : Any]? = nil, _ finishCallback : @escaping (_ result: Any) -> ()) {
-        AlamofireStart.requestData(.POST, options:"account/info",parameters:paras, token: ssid,sign:0) { (result) in
+        NetToolsSDK.requestData(.POST, options:"account/info",parameters:paras, token: Authos) { (result) in
             sleep(2)
             self.titles = ["1024程序员节",
                            "双11光棍节",
